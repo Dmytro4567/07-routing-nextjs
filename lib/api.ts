@@ -14,7 +14,8 @@ const instance = axios.create({
 export const fetchNotes = async (
     search: string,
     page: number,
-    perPage = 12
+    perPage = 12,
+    tag?: string | null
 ): Promise<{ notes: Note[]; totalPages: number }> => {
     const params: Record<string, string | number> = {
         page,
@@ -25,10 +26,11 @@ export const fetchNotes = async (
         params.search = search;
     }
 
-    const response = await instance.get<{ notes: Note[]; totalPages: number }>(
-        '/notes',
-        {params}
-    );
+    if (tag && tag !== 'All') {
+        params.tag = tag;
+    }
+
+    const response = await instance.get('/notes', {params});
     return response.data;
 };
 

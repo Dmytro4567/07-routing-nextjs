@@ -12,10 +12,10 @@ import type {Note} from '@/types/note';
 import {useDebounce} from 'use-debounce';
 
 interface NotesClientProps {
-    initialNotes: Note[];
+    tag?: string | null;
 }
 
-export default function NotesClient({initialNotes}: NotesClientProps) {
+export default function NotesClient({tag}: NotesClientProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
@@ -28,13 +28,10 @@ export default function NotesClient({initialNotes}: NotesClientProps) {
         isError,
         isSuccess,
     } = useQuery<{ notes: Note[]; totalPages: number }>({
-        queryKey: ['notes', debouncedSearch, page],
-        queryFn: () => fetchNotes(debouncedSearch, page, perPage),
+        queryKey: ['notes', debouncedSearch, page, tag],
+        queryFn: () => fetchNotes(debouncedSearch, page, perPage, tag),
         placeholderData: keepPreviousData,
-        initialData: {
-            notes: initialNotes,
-            totalPages: 1,
-        },
+        refetchOnMount: false,
     });
 
     const handleSearchChange = (value: string) => {

@@ -1,10 +1,10 @@
 import Notes from './Notes.client';
 
-interface Props {
-    params: { slug?: string[] };
-}
+type Props = {
+    params: { [key: string]: string | string[] | undefined };
+};
 
-export default function FilteredNotesPage({ params }: Props) {
+export default function FilteredNotesPage({params}: Props) {
     const tag = params.slug?.[0] ?? null;
-    return <Notes tag={tag} />;
+    return <Notes tag={tag}/>;
 }

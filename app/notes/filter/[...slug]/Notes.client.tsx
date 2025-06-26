@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import css from './Notes.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
@@ -16,11 +16,17 @@ interface NotesClientProps {
 }
 
 export default function NotesClient({tag}: NotesClientProps) {
+    if (tag === undefined) return null;
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
     const [perPage] = useState(12);
     const [debouncedSearch] = useDebounce(search, 500);
+
+    useEffect(() => {
+        setPage(1);
+    }, [tag]);
 
     const {
         data,
@@ -29,8 +35,11 @@ export default function NotesClient({tag}: NotesClientProps) {
         isSuccess,
     } = useQuery<{ notes: Note[]; totalPages: number }>({
         queryKey: ['notes', debouncedSearch, page, tag],
-        queryFn: () => fetchNotes(debouncedSearch, page, perPage, tag),
+        queryFn: () => {
+            return fetchNotes(debouncedSearch, page, perPage, tag);
+        },
         placeholderData: keepPreviousData,
+        enabled: tag !== undefined,
         refetchOnMount: false,
     });
 
@@ -66,3 +75,4 @@ export default function NotesClient({tag}: NotesClientProps) {
         </div>
     );
 }
+

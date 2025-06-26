@@ -50,3 +50,4 @@ export const fetchNoteById = async (id: number): Promise<Note> => {
     const response = await instance.get<Note>(`/notes/${id}`);
     return response.data;
 };
+

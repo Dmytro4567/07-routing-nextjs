@@ -1,10 +1,7 @@
 import Notes from './Notes.client';
 
-type Props = {
-    params: { [key: string]: string | string[] | undefined };
-};
-
-export default function FilteredNotesPage({params}: Props) {
-    const tag = params.slug?.[0] ?? null;
+export default async function FilteredNotesPage({params}: { params: Promise<{ slug?: string[] }> }) {
+    const resolvedParams = await params;
+    const tag = resolvedParams.slug?.[0] ?? null;
     return <Notes tag={tag}/>;
 }

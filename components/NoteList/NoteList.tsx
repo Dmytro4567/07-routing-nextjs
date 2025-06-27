@@ -35,7 +35,7 @@ export default function NoteList({notes}: NoteListProps) {
                             <div className={css.footer}>
                                 <span className={css.tag}>{note.tag}</span>
                                 <div>
-                                    <Link href={`/notes/${note.id}`} className={css.link}>
+                                    <Link href={`/notes/${note.id}`} className={css.link} scroll={false}>
                                         View details
                                     </Link>
                                     <button onClick={() => mutate(note.id)}

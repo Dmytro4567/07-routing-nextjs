@@ -5,11 +5,12 @@ import css from './Notes.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import NoteModal from '@/components/NoteModal/NoteModal';
+import Modal from '@/components/Modal/Modal';
 import {keepPreviousData, useQuery} from '@tanstack/react-query';
 import {fetchNotes} from '@/lib/api';
 import type {Note} from '@/types/note';
 import {useDebounce} from 'use-debounce';
+import NoteForm from "@/components/NoteForm/NoteForm";
 
 interface NotesClientProps {
     tag?: string | null;
@@ -62,7 +63,11 @@ export default function NotesClient({tag}: NotesClientProps) {
                 <NoteList notes={data.notes}/>
             )}
 
-            {isModalOpen && <NoteModal onClose={() => setIsModalOpen(false)}/>}
+            {isModalOpen && (
+                <Modal onClose={() => setIsModalOpen(false)}>
+                    <NoteForm onClose={() => setIsModalOpen(false)}/>
+                </Modal>
+            )}
         </div>
     );
 }

@@ -14,9 +14,10 @@ import NoteForm from "@/components/NoteForm/NoteForm";
 
 interface NotesClientProps {
     tag?: string | null;
+    initialData: { notes: Note[]; totalPages: number };
 }
 
-export default function NotesClient({tag}: NotesClientProps) {
+export default function NotesClient({tag, initialData}: NotesClientProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
@@ -33,6 +34,7 @@ export default function NotesClient({tag}: NotesClientProps) {
         queryFn: () => fetchNotes(debouncedSearch, page, perPage, tag),
         placeholderData: keepPreviousData,
         refetchOnMount: false,
+        initialData,
     });
 
     const handleSearchChange = (value: string) => {
@@ -71,3 +73,4 @@ export default function NotesClient({tag}: NotesClientProps) {
         </div>
     );
 }
+
